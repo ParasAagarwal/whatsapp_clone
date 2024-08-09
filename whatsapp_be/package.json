@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -25,6 +27,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.1.4",
     "trim-request": "^1.0.6",
+    "validator": "^13.12.0",
     "winston": "^3.14.1"
   }
 }
