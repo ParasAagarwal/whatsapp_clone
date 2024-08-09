@@ -43,6 +43,7 @@ const userSchema = mongoose.Schema(
   }
 );
 
+//hashing before saving to database only if its new
 userSchema.pre("save", async function (next) {
   try {
     if (this.isNew) {
