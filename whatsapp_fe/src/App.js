@@ -1,12 +1,5 @@
-import { ArrowIcon, ChatIcon } from "./svg";
-
 function App() {
-  return (
-    <div className="App">
-      <h1>Welcome to the Frontend</h1>
-      <ChatIcon className="" />
-    </div>
-  );
+  return <div className="dark">Hi</div>;
 }
 
 export default App;
