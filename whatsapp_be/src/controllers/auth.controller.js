@@ -6,7 +6,6 @@ import { findUser } from "../services/user.service.js";
 export const register = async (req, res, next) => {
   try {
     const { name, email, picture, status, password } = req.body;
-
     //createUser service
     const newUser = await createUser({
       name,

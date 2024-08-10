@@ -5,9 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import AuthInput from "./AuthInput";
-import { registerUser } from "../../features/userSlice";
+import { changeStatus, registerUser } from "../../features/userSlice";
 import Picture from "./Picture";
 import { useState } from "react";
+import axios from "axios";
+
+const cloud_name = process.env.REACT_APP_CLOUD_NAME;
+const cloud_secret = process.env.REACT_APP_CLOUD_SECRET;
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -24,12 +28,38 @@ const RegisterForm = () => {
   } = useForm({ resolver: yupResolver(signUpSchema) }); //react-hookform-resolver for "yup" to validation input
 
   const onSubmit = async (data) => {
-    let res = await dispatch(registerUser({ ...data, picture: "" }));
-    if (res.payload.user) {
-      navigate("/");
+    dispatch(changeStatus("loading"));
+    if (picture) {
+      //upload to cloudinary and then register user
+      await uploadImage().then(async (response) => {
+        // After the image is uploaded, register the user with the image URL
+        let res = await dispatch(
+          registerUser({ ...data, picture: response.secure_url })
+        );
+        if (res?.payload?.user) {
+          navigate("/");
+        }
+      });
+    } else {
+      let res = await dispatch(registerUser({ ...data, picture: "" }));
+      if (res?.payload?.user) {
+        navigate("/");
+      }
     }
   };
-  
+
+  const uploadImage = async () => {
+    let formData = new FormData();
+    //upload_preset is a predefined Cloudinary setting that defines how the uploaded file should be handled.
+    formData.append("upload_preset", cloud_secret);
+    formData.append("file", picture);
+    const { data } = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+      formData//uploading image
+    );
+    return data;
+  };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Container */}
