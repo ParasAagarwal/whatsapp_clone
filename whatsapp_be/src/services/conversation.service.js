@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import createHttpError from "http-errors";
 import { ConversationModel, UserModel } from "../models/index.js";
 
@@ -55,7 +56,8 @@ export const getUserConversations = async (user_id) => {
     .populate("admin", "-password")
     .populate("latestMessage")
     .sort({ updatedAt: -1 })
-    .then(async (results) => {//all the data now is passed and sent as argument in form of results variable(array) and then we are asking to iterate in array and populate every field in sender with the actual data from userModel
+    .then(async (results) => {
+      //all the data now is passed and sent as argument in form of results variable(array) and then we are asking to iterate in array and populate every field in sender with the actual data from userModel
       results = await UserModel.populate(results, {
         path: "latestMessage.sender",
         select: "name email picture status",
@@ -66,4 +68,21 @@ export const getUserConversations = async (user_id) => {
       throw createHttpError.BadRequest("Oops...Something went wrong !");
     });
   return conversations;
+};
+
+export const updateLatestMessage = async (convo_id, msg) => {
+  if (!mongoose.Types.ObjectId.isValid(convo_id)) {
+    throw createHttpError.BadRequest("Invalid conversation ID");
+  }
+
+  const updatedConvo = await ConversationModel.findByIdAndUpdate(
+    convo_id,
+    { latestMessage: msg },
+    { new: true } // returns the updated document
+  );
+
+  if (!updatedConvo)
+    throw createHttpError.BadRequest("Conversation not found or update failed");
+
+  return updatedConvo;
 };
