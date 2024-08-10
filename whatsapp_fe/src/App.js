@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 function App() {
   const { user } = useSelector((state) => state.user);
   const { access_token } = user;
-  console.log(access_token);
   return (
     <div className="dark">
       <Router>
