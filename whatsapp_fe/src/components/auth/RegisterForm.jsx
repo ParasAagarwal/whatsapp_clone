@@ -1,13 +1,21 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../../utils/vaidation";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import AuthInput from "./AuthInput";
+import { registerUser } from "../../features/userSlice";
+import Picture from "./Picture";
+import { useState } from "react";
 
 const RegisterForm = () => {
-  const { status } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status, error } = useSelector((state) => state.user);
+  const [picture, setPicture] = useState();
+  const [readablePicture, setReadablePicture] = useState("");
+
   const {
     register, //register input data to keep track of it
     handleSubmit,
@@ -15,12 +23,17 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(signUpSchema) }); //react-hookform-resolver for "yup" to validation input
 
-  const onSubmit = (data) => console.log(data);
-
+  const onSubmit = async (data) => {
+    let res = await dispatch(registerUser({ ...data, picture: "" }));
+    if (res.payload.user) {
+      navigate("/");
+    }
+  };
+  
   return (
     <div className="min-h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Container */}
-      <div className="max-w-md space-y-8 p-10 dark:bg-dark_bg_2 rounded-xl">
+      <div className="w-full max-w-md space-y-8 p-10 dark:bg-dark_bg_2 rounded-xl">
         {/* Heading */}
         <div className="text-center dark:text-dark_text_1">
           <h2 className="mt-6 text-3xl font-bold">Welcome</h2>
@@ -46,7 +59,7 @@ const RegisterForm = () => {
           <AuthInput
             name="status"
             type="text"
-            placeholder="Status"
+            placeholder="Status (Optional)"
             register={register}
             error={errors?.status?.message}
           />
@@ -57,6 +70,14 @@ const RegisterForm = () => {
             register={register}
             error={errors?.password?.message}
           />
+          {/* Picture */}
+          <Picture
+            readablePicture={readablePicture}
+            setReadablePicture={setReadablePicture}
+            setPicture={setPicture}
+          />
+          {/* if we have an error */}
+          {error ? <div className="text-red-400">{error}</div> : null}
           {/* Submit button */}
           <button
             type="submit"
