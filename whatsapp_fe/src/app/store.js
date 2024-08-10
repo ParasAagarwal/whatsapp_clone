@@ -4,6 +4,7 @@ import createFilter from "redux-persist-transform-filter";
 import storage from "redux-persist/lib/storage";
 // Slices
 import userSlice from "../features/userSlice";
+import chatSlice from "../features/chatSlice";
 
 // Filter to persist only the 'user' field from the 'user' slice
 const saveUserOnlyFilter = createFilter("user", ["user"]);
@@ -16,9 +17,10 @@ const persistConfig = {
   transforms: [saveUserOnlyFilter], // Apply filter to save only certain fields
 };
 
-// Combine reducers (currently only 'userSlice')
+// Combine reducers
 const rootReducer = combineReducers({
   user: userSlice,
+  chat: chatSlice,
 });
 
 // Apply persistence to the root reducer

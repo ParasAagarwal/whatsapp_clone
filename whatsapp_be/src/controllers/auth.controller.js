@@ -46,7 +46,7 @@ export const register = async (req, res, next) => {
         email: newUser.email,
         picture: newUser.picture,
         status: newUser.status,
-        access_token,
+        token: access_token,
       },
     });
   } catch (error) {
@@ -87,7 +87,7 @@ export const login = async (req, res, next) => {
         email: user.email,
         picture: user.picture,
         status: user.status,
-        access_token,
+        token: access_token,
       },
     });
   } catch (error) {
@@ -122,7 +122,7 @@ export const refreshToken = async (req, res, next) => {
       throw createHttpError.Unauthorized("Invalid refresh token.");
 
     //findUser util
-    const user = await findUser(check.userId)
+    const user = await findUser(check.userId);
 
     //generate new access token again of verified user
     const access_token = await generateToken(
@@ -137,10 +137,9 @@ export const refreshToken = async (req, res, next) => {
         email: user.email,
         picture: user.picture,
         status: user.status,
-        access_token,
+        token: access_token,
       },
     });
-
   } catch (error) {
     next(error);
   }
