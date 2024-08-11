@@ -11,7 +11,7 @@ export const findUser = async (userId) => {
 export const searchUsers = async (keyword, userId) => {
   const users = await UserModel.find({
     $or: [
-      { name: { $regex: keyword, $options: "i" } },
+      { name: { $regex: keyword, $options: "i" } },//i for case insensitive search
       { email: { $regex: keyword, $options: "i" } },
     ],
   }).find({
