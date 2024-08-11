@@ -1,6 +1,24 @@
+import { useDispatch, useSelector } from "react-redux";
+import { open_create_conversation } from "../../../features/chatSlice";
+
 const Contact = ({ contact }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const { token } = user;
+
+  const values = {
+    receiver_id: contact._id,
+    token,
+  };
+
+  const openConversation = async () => {
+    dispatch(open_create_conversation(values)); //when we are clicking this card we are firing the above action so that it make this chat as active convo and hence we open this chat and do realtime chatting.
+  };
   return (
-    <li className="list-none h-[72px] hover:dark:bg-dark_bg_2 cursor-pointer dark:text-dark_text_1 px-[10px]">
+    <li
+      onClick={() => openConversation()}
+      className="list-none h-[72px] hover:dark:bg-dark_bg_2 cursor-pointer dark:text-dark_text_1 px-[10px]"
+    >
       {/*Container*/}
       <div className="flex items-center gap-x-3 py-[10px]">
         {/*Contact infos*/}
