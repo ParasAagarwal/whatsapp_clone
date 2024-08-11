@@ -143,6 +143,15 @@ export const chatSlice = createSlice({
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.messages = [...state.messages, action.payload];//we are returning message from backend hence we are adding it here in the state
+        let conversation = {
+          ...action.payload.conversation,//getting all properties of conversation from convo field
+          latestMessage: action.payload,//latest message also there
+        };
+        let newConvos = [...state.conversations].filter(
+          (c) => c._id !== conversation._id
+        );//here I filtered all the conversations with the latest convo "conversation" we created above so that we can now place that convo on top
+        newConvos.unshift(conversation);// placing the latest convo on top 
+        state.conversations = newConvos;//updating state
       })
       .addCase(sendMessage.rejected, (state, action) => {
         state.status = "failed";

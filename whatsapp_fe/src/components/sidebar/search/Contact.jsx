@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { open_create_conversation } from "../../../features/chatSlice";
 
-const Contact = ({ contact }) => {
+const Contact = ({ contact, setSearchResults }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { token } = user;
@@ -12,7 +12,9 @@ const Contact = ({ contact }) => {
   };
 
   const openConversation = async () => {
-    dispatch(open_create_conversation(values)); //when we are clicking this card we are firing the above action so that it make this chat as active convo and hence we open this chat and do realtime chatting.
+    await dispatch(open_create_conversation(values)); //when we are clicking this card we are firing the above action so that it make this chat as active convo and hence we open this chat and do realtime chatting.
+    
+    setSearchResults([]);//so that it opens in main page instead of contact page
   };
   return (
     <li
