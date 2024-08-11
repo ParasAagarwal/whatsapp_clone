@@ -1,9 +1,32 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { FilterIcon, ReturnIcon, SearchIcon } from "../../../svg";
+import axios from "axios";
 
-const Search = ({ searchLength }) => {
+const Search = ({ searchLength, setSearchResults }) => {
+  const { user } = useSelector((state) => state.user);
+  const { token } = user;
   const [show, setShow] = useState(false);
-  const handleSearch=()=>{}
+
+  const handleSearch = async (e) => {
+    if (e.target.value && e.key === "Enter") {
+      try {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API_ENDPOINT}/user?search=${e.target.value}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setSearchResults(data);
+      } catch (error) {
+        console.log(error.response.data.error.message);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
   return (
     <div className="h-[49px] py-1.5">
       {/* container */}
@@ -12,7 +35,10 @@ const Search = ({ searchLength }) => {
           <div className="w-full flex dark:bg-dark_bg_2 rounded-lg pl-2">
             {/* UI change to arrow icon on clicking on input field or typing */}
             {show || searchLength > 0 ? (
-              <span className="w-8 flex items-center justify-center rotateAnimation cursor-pointer">
+              <span
+                className="w-8 flex items-center justify-center rotateAnimation cursor-pointer"
+                onClick={() => setSearchResults([])}
+              >
                 <ReturnIcon className="fill-green_1 w-5" />
               </span>
             ) : (

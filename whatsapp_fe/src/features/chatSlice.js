@@ -22,7 +22,6 @@ export const getConversations = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data.error.message);
