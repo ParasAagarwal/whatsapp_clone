@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SendIcon } from "../../../svg";
 import { ClipLoader } from "react-spinners";
-import Attachments from "./Attachments";
+import { Attachments } from "./attachments";
 import EmojiPickerApp from "./EmojiPicker";
 import Input from "./Input";
 import { sendMessage } from "../../../features/chatSlice";
@@ -9,10 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function ChatActions() {
   const dispatch = useDispatch();
+  const [showAttachments, setShowAttachments] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+
   const { activeConversation, status } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
   const { token } = user;
   const [message, setMessage] = useState("");
+  const textRef = useRef();
 
   const values = {
     message,
@@ -35,11 +39,22 @@ export default function ChatActions() {
       <div className="w-full flex items-center gap-x-2">
         {/*Emojis and attachments*/}
         <ul className="flex gap-x-2">
-          <EmojiPickerApp />
-          <Attachments />
+          <EmojiPickerApp
+            textRef={textRef}
+            message={message}
+            setMessage={setMessage}
+            showPicker={showPicker}
+            setShowPicker={setShowPicker}
+            setShowAttachments={setShowAttachments}
+          />
+          <Attachments
+            setShowAttachments={setShowAttachments}
+            showAttachments={showAttachments}
+            setShowPicker={setShowPicker}
+          />
         </ul>
         {/* Input */}
-        <Input message={message} setMessage={setMessage} />
+        <Input message={message} setMessage={setMessage} textRef={textRef} />
         {/* Send button */}
         <button type="submit" className="btn">
           {status === "loading" ? (
