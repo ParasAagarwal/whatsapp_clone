@@ -16,6 +16,6 @@ export const searchUsers = async (keyword, userId) => {
     ],
   }).find({
     _id: { $ne: userId },
-  });
+  });//dont show self
   return users;
 };
