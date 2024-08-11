@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Server } from "socket.io";
 import app from "./app.js";
 import logger from "./configs/logger.config.js";
+import SocketServer from "./SocketServer.js";
 
 //env variables
 const { DATABASE_URL } = process.env;
@@ -35,8 +36,10 @@ const io = new Server(server, {
   },
 });
 
+//for sending we use 'emit' and for receiving we use 'on'
 io.on("connection",(socket)=>{
   logger.info('socket io connected successfully.')
+  SocketServer(socket);
 })//after connection with backend
 
 // Function to handle graceful server shutdown

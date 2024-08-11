@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { open_create_conversation } from "../../../features/chatSlice";
+import SocketContext from "../../../context/SocketContext";
 
-const Contact = ({ contact, setSearchResults }) => {
+function Contact({ contact, setSearchResults, socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { token } = user;
@@ -12,9 +13,10 @@ const Contact = ({ contact, setSearchResults }) => {
   };
 
   const openConversation = async () => {
-    await dispatch(open_create_conversation(values)); //when we are clicking this card we are firing the above action so that it make this chat as active convo and hence we open this chat and do realtime chatting.
-    
-    setSearchResults([]);//so that it opens in main page instead of contact page
+    let newConvo = await dispatch(open_create_conversation(values)); //when we are clicking this card we are firing the above action so that it make this chat as active convo and hence we open this chat and do realtime chatting.
+    socket.emit("join conversation", newConvo.payload._id);
+
+    setSearchResults([]); //so that it opens in main page instead of contact page
   };
   return (
     <li
@@ -54,6 +56,12 @@ const Contact = ({ contact, setSearchResults }) => {
       <div className="ml-16 border-b dark:border-b-dark_border_1"></div>
     </li>
   );
-};
+}
 
-export default Contact;
+const ContactWithContext = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <Contact {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+
+export default ContactWithContext;
