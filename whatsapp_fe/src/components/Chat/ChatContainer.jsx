@@ -21,8 +21,6 @@ const ChatContainer = () => {
     }
   }, [activeConversation]);
 
-  console.log("messages", messages);
-
   return (
     <div className="relative w-full h-full border-l dark:border-l-dark_border_2 select-none overflow-hidden">
       {/*Container*/}
