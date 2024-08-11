@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 
+// IST Offset in milliseconds (UTC + 5:30)
+const IST_OFFSET = 5.5 * 60 * 60 * 1000;
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -55,6 +58,19 @@ userSchema.pre("save", async function (next) {
   } catch (error) {
     next(error);
   }
+});
+
+// Middleware to adjust timestamps to IST before saving
+userSchema.pre("save", function (next) {
+  const now = new Date();
+  const nowIST = new Date(now.getTime() + IST_OFFSET);
+
+  if (!this.createdAt) {
+    this.createdAt = nowIST;
+  }
+  this.updatedAt = nowIST;
+  
+  next();
 });
 
 const UserModel =
