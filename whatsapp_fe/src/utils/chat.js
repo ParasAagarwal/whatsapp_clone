@@ -1,9 +1,9 @@
 export const getConversationId = (user, users) => {
   return users[0]._id === user._id ? users[1]._id : users[0]._id;
-};//me or other one
+}; //me or other one
 
-export const getConversationName = (user, users) => {
-  return users[0]._id === user._id ? users[1].name : users[0].name;
+export const getConversationName = (currentUser, users) => {
+  return users.find((user) => user._id !== currentUser._id)?.name;
 };
 
 export const getConversationPicture = (user, users) => {

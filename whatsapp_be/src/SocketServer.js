@@ -21,7 +21,7 @@ export default function (socket, io) {
       // Skip sending the message to the user who sent it
       if (user._id === message.sender._id) return;
       // Emit the "message received" event to all other users in the conversation
-      socket.in(user._id).emit("message received", message);
+      socket.in(user._id).emit("receive message", message);
     });
   });
 }

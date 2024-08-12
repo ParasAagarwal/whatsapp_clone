@@ -19,6 +19,10 @@ function Conversation({ convo, socket }) {
     receiver_id: getConversationId(user, convo.users),
     token,
   };
+  console.log(
+    "Rendering conversation name:",
+    capitalize(getConversationName(user, convo.users))
+  );
 
   const openConversation = async () => {
     let newConvo = await dispatch(open_create_conversation(values)); //when we are clicking this card we are firing the above action so that it make this chat as active convo and hence we open this chat and do realtime chatting.
@@ -28,9 +32,9 @@ function Conversation({ convo, socket }) {
   return (
     <li
       onClick={() => openConversation()}
-      className={`"list-none h-[72px] w-full dark:bg-dark_bg_1 hover:${
-        convo._id !== activeConversation._id ? "dark:bg-dark_bg_2" : ""
-      } cursor-pointer dark:text-dark_text_1 px-[10px]" ${
+      className={`list-none h-[72px] w-full dark:bg-dark_bg_1 hover:${
+        convo._id !== activeConversation._id ? "hover:dark:bg-dark_bg_2" : ""
+      } cursor-pointer dark:text-dark_text_1 px-[10px] ${
         convo._id === activeConversation._id ? "dark:bg-dark_hover_1" : ""
       }`}
     >
@@ -43,7 +47,7 @@ function Conversation({ convo, socket }) {
             <img
               src={getConversationPicture(user, convo.users)}
               alt="picture"
-              className="w-full h-full object cover"
+              className="w-full h-full object-cover"
             />
           </div>
           {/* Conversation name and message */}
