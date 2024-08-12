@@ -6,7 +6,7 @@ import { getConversationMessages } from "../../features/chatSlice";
 import { ChatActions } from "./actions";
 import { checkOnlineStatus, getConversationId } from "../../utils/chat";
 
-const ChatContainer = ({ onlineUsers }) => {
+const ChatContainer = ({ onlineUsers, typing }) => {
   const dispatch = useDispatch();
   const { activeConversation, messages } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
@@ -35,7 +35,7 @@ const ChatContainer = ({ onlineUsers }) => {
           )}
         />
         {/* Chat messages */}
-        <ChatMessages />
+        <ChatMessages typing={typing} />
         {/* Chat Actions */}
         <ChatActions />
       </div>

@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
 import Message from "./Message";
 import { useEffect, useRef } from "react";
+import Typing from "./Typing";
 
-export default function ChatMessages() {
-  const { messages } = useSelector((state) => state.chat);
+export default function ChatMessages({ typing }) {
+  const { messages,activeConversation } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
   const endRef = useRef();
 
@@ -31,6 +32,7 @@ export default function ChatMessages() {
               me={user._id === message.sender._id}
             />
           ))}
+        {typing === activeConversation._id ? <Typing /> : null}
         {/*extracting message from all conversation */}
         <div className="mt-2" ref={endRef}></div>
       </div>

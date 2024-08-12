@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import Conversation from "./Conversation";
 import { checkOnlineStatus, getConversationId } from "../../../utils/chat";
 
-const Conversations = ({ onlineUsers }) => {
+const Conversations = ({ onlineUsers, typing }) => {
   const { conversations, activeConversation } = useSelector(
     (state) => state.chat
   );
@@ -22,6 +22,7 @@ const Conversations = ({ onlineUsers }) => {
                   convo={convo}
                   key={convo._id}
                   online={check ? true : false}
+                  typing={typing}
                 />
               );
             })}
