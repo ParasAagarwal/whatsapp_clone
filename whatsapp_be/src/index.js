@@ -39,7 +39,7 @@ const io = new Server(server, {
 //for sending we use 'emit' and for receiving we use 'on'
 io.on("connection",(socket)=>{
   logger.info('socket io connected successfully.')
-  SocketServer(socket);
+  SocketServer(socket,io);
 })//after connection with backend
 
 // Function to handle graceful server shutdown
