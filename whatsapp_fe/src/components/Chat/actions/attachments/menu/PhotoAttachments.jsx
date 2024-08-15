@@ -51,6 +51,7 @@ export default function PhotoAttachments() {
       <input
         type="file"
         hidden
+        multiple
         ref={inputRef}
         accept="image/png,image/jpeg,image/gif,image/webp,video/mp4,video/mpeg"
         onChange={imageHandler}

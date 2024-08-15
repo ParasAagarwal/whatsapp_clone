@@ -1,7 +1,10 @@
 import moment from "moment";
-import TraingleIcon from "../../../svg/triangle";
+import { TraingleIcon } from "../../../../svg";
+import FileImageVideos from "./FileImageVideos";
+import FileOthers from "./FileOthers";
 
-export default function Message({ message, me }) {
+export default function FileMessage({ FileMessage, message, me }) {
+  const { file, type } = FileMessage;
   return (
     <div
       className={`w-full flex mt-2 space-x-3 max-w-xs ${
@@ -16,8 +19,12 @@ export default function Message({ message, me }) {
         `}
         >
           {/*Message*/}
-          <p className="float-left h-full text-sm pb-4 pr-8">
-            {message.message}
+          <p className="h-full text-sm">
+            {type === "IMAGE" || type === "VIDEO" ? (
+              <FileImageVideos url={file.secure_url} type={type} />
+            ) : (
+              <FileOthers file={file} type={type} me={me} />
+            )}
           </p>
           {/*Message Date*/}
           <span className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_5 leading-none">

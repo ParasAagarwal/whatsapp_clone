@@ -1,13 +1,14 @@
 import { useRef } from "react";
-import { DocumentIcon } from "../../../../../svg";
-import { addFiles } from "../../../../../features/chatSlice";
+import { CloseIcon } from "../../../../svg";
 import { useDispatch } from "react-redux";
-import { getFileType } from "../../../../../utils/file";
+import { addFiles } from "../../../../features/chatSlice";
+import { getFileType } from "../../../../utils/file";
 
-export default function DocumentAttachment() {
+export default function Add() {
   const dispatch = useDispatch();
-  const inputRef = useRef();
-  const documentHandler = (e) => {
+  const inputRef = useRef(null);
+
+  const filesHandler = (e) => {
     let files = Array.from(e.target.files);
     files.forEach((file) => {
       if (
@@ -26,12 +27,16 @@ export default function DocumentAttachment() {
         file.type !== "application/zip" &&
         file.type !== "audio/mpeg" &&
         file.type !== "audio/wav" &&
-        file.type !== "video/mp4" && // Accept video files as well
-        file.type !== "video/x-msvideo" && // .avi files
-        file.type !== "video/quicktime" // .mov files
+        file.type !== "image/png" &&
+        file.type !== "image/jpeg" &&
+        file.type !== "image/gif" &&
+        file.type !== "image/webp" &&
+        file.type !== "video/mp4" &&
+        file.type !== "video/mpeg" &&
+        file.type !== "image/webm" &&
+        file.type !== "image/webp"
       ) {
         files = files.filter((item) => item.name !== file.name);
-        console.log(file.type);
         return;
       } else if (file.size > 1024 * 1024 * 10) {
         files = files.filter((item) => item.name !== file.name);
@@ -51,24 +56,24 @@ export default function DocumentAttachment() {
       }
     });
   };
-
   return (
-    <li>
-      <button
-        type="button"
-        className="bg-[#5F66CD] rounded-full"
+    <>
+      <div
         onClick={() => inputRef.current.click()}
+        className="w-14 h-14 mt-2 border dark:border-white rounded-md flex items-center justify-center cursor-pointer"
       >
-        <DocumentIcon />
-      </button>
+        <span className="rotate-45">
+          <CloseIcon className="dark:fill-dark_svg_1" />
+        </span>
+      </div>
       <input
         type="file"
         hidden
         multiple
         ref={inputRef}
-        accept="application/*,text/plain,video/*,audio/*"
-        onChange={documentHandler}
+        accept="application/*,text/plain,image/png,image/jpeg,image/gif,image/webp,video/mp4,video/mpeg"
+        onChange={filesHandler}
       />
-    </li>
+    </>
   );
 }
