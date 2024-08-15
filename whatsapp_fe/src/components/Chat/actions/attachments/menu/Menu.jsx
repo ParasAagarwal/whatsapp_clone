@@ -2,10 +2,10 @@ import {
   CameraIcon,
   ContactIcon,
   DocumentIcon,
-  PhotoIcon,
   PollIcon,
   StickerIcon,
 } from "../../../../../svg";
+import PhotoAttachments from "./PhotoAttachments";
 
 export default function Menu() {
   return (
@@ -35,11 +35,7 @@ export default function Menu() {
           <StickerIcon />
         </button>
       </li>
-      <li>
-        <button type="button" className="bg-[#BF59CF] rounded-full">
-          <PhotoIcon />
-        </button>
-      </li>
+      <PhotoAttachments/>
     </ul>
   );
 }

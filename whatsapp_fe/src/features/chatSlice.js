@@ -11,6 +11,7 @@ const initialState = {
   activeConversation: {},
   messages: [],
   notifications: [],
+  files: [],
 };
 
 //functions
@@ -117,6 +118,12 @@ export const chatSlice = createSlice({
       newConvos.unshift(conversation); // placing the latest convo on top
       state.conversations = newConvos; //updating state
     },
+    addFiles: (state, action) => {
+      state.files = [...state.files, action.payload];
+    },
+    clearFiles: (state, action) => {
+      state.files = [];
+    },
   },
   extraReducers(builder) {
     builder
@@ -177,6 +184,10 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { setActiveConversation, updateMessagesAndConversations } =
-  chatSlice.actions;
+export const {
+  setActiveConversation,
+  updateMessagesAndConversations,
+  addFiles,
+  clearFiles,
+} = chatSlice.actions;
 export default chatSlice.reducer;
